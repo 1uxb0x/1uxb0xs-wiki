@@ -211,6 +211,8 @@ Error message and password prompt
 
 <li>$:/plugins/tiddlywiki/highlight/styles</li>
 
+<li>$:/plugins/tiddlywiki/savetrail</li>
+
 <li>$:/SiteSubtitle</li>
 
 <li>$:/SiteTitle</li>
@@ -4086,6 +4088,8 @@ Error message and password prompt
 <li>2018.12.13 – Free Writing:</li>
 
 <li>2018.12.13 – Print Reading:</li>
+
+<li>2018.12.16: Draft: About, The Opening of the Rabbithole</li>
 
 <li>20th April 2017</li>
 
@@ -15800,6 +15804,38 @@ very-muted-foreground: #888888</pre>
 </div>
 <div created="20171130194911443" modified="20171130195111499" tags="$:/tags/Stylesheet" title="$:/plugins/tiddlywiki/highlight/styles">
 <pre>.hljs{display:block;overflow-x:auto;padding:.5em;color:#ffffff;background:#000029;-webkit-text-size-adjust:none}.hljs-comment,.diff .hljs-header,.hljs-javadoc{color:#606060;font-style:italic}.hljs-keyword,.css .rule .hljs-keyword,.hljs-winutils,.nginx .hljs-title,.hljs-subst,.hljs-request,.hljs-status{color:#68b7ff;font-weight:bold}.hljs-number,.hljs-hexcolor,.ruby .hljs-constant{color:purple}.hljs-string,.hljs-tag .hljs-value,.hljs-phpdoc,.hljs-dartdoc,.tex .hljs-formula{color:#e5d93d}.hljs-title,.hljs-id,.scss .hljs-preprocessor{color:#79dc72;font-weight:bold}.hljs-list .hljs-keyword,.hljs-subst{font-weight:normal}.hljs-class .hljs-title,.hljs-type,.vhdl .hljs-literal,.tex .hljs-command{color:#rerere;font-weight:bold}.hljs-tag,.hljs-tag .hljs-title,.hljs-rule .hljs-property,.django .hljs-tag .hljs-keyword{color:navy;font-weight:normal}.hljs-attribute,.hljs-variable,.lisp .hljs-body,.hljs-name{color:teal}.hljs-regexp{color:#009926}.hljs-symbol,.ruby .hljs-symbol .hljs-string,.lisp .hljs-keyword,.clojure .hljs-keyword,.scheme .hljs-keyword,.tex .hljs-special,.hljs-prompt{color:#990073}.hljs-built_in{color:#0086b3}.hljs-preprocessor,.hljs-pragma,.hljs-pi,.hljs-doctype,.hljs-shebang,.hljs-cdata{color:#999;font-weight:bold}.hljs-deletion{background:#fdd}.hljs-addition{background:#dfd}.diff .hljs-change{background:#0086b3}.hljs-chunk{color:#aaa}</pre>
+</div>
+<div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="" description="Auto-download modified tiddlers" list="readme settings" plugin-type="plugin" tags="" title="$:/plugins/tiddlywiki/savetrail" type="application/json" version="5.1.17">
+<pre>{
+    &quot;tiddlers&quot;: {
+        &quot;$:/config/SaveTrailPlugin/enable-drafts&quot;: {
+            &quot;title&quot;: &quot;$:/config/SaveTrailPlugin/enable-drafts&quot;,
+            &quot;text&quot;: &quot;no&quot;
+        },
+        &quot;$:/config/SaveTrailPlugin/enable&quot;: {
+            &quot;title&quot;: &quot;$:/config/SaveTrailPlugin/enable&quot;,
+            &quot;text&quot;: &quot;yes&quot;
+        },
+        &quot;$:/config/SaveTrailPlugin/sync-drafts-filter&quot;: {
+            &quot;title&quot;: &quot;$:/config/SaveTrailPlugin/sync-drafts-filter&quot;,
+            &quot;text&quot;: &quot;[is[tiddler]has[draft.of]]&quot;
+        },
+        &quot;$:/plugins/tiddlywiki/savetrail/readme&quot;: {
+            &quot;title&quot;: &quot;$:/plugins/tiddlywiki/savetrail/readme&quot;,
+            &quot;text&quot;: &quot;This plugin causes TiddlyWiki to continuously download (as a JSON file) the contents of any tiddler that is manually changed by any of several means:\n\n* Confirming an edit\n* Deleting tiddlers\n* Imports\n* Renames/relinks\n* Optionally, typing in draft tiddlers can trigger a download\n\nWhere appropriate, separate 'before' and 'after' files are downloaded. Configured correctly, the browser will download the files silently in the background, and they can be used as a backup in case of accidental data loss.\n\n''CAUTION'': Using this plugin will generate a //lot// of files in your downloads folder! Some points to watch:\n\n* This plugin is pretty much unusable unless your browser is set up to download files automatically, without prompting for the location\n* Automatic file downloading doesn't work in all browsers - in particular, Safari and Internet Explorer do not currently support the [[necessary HTML5 feature|http://caniuse.com/download]]\n* Be aware of the privacy implications of leaving a plaintext trail of all of your edits. You should only enable this plugin on computers that your trust and with content that is not sensitive\n* The plugin uses the tiddler title plus a timestamp to generate a filename for the downloaded file, but some browsers ignore the specified title and generate their own title for each downloaded file\n\nOther points to note:\n\n* By default, after a draft tiddler has been modified the plugin waits until at least one second has elapsed since the last typing before it attempts to download the tiddler. This reduces the number of times that rapidly changing tiddlers are saved\n* This plugin can be used with both the single file HTML configuration and under Node.js because it is independent of the usual saving and syncing processes\n&quot;
+        },
+        &quot;$:/plugins/tiddlywiki/savetrail/savetrail.js&quot;: {
+            &quot;title&quot;: &quot;$:/plugins/tiddlywiki/savetrail/savetrail.js&quot;,
+            &quot;text&quot;: &quot;/*\\\ntitle: $:/plugins/tiddlywiki/savetrail/savetrail.js\ntype: application/javascript\nmodule-type: startup\n\nA startup module to download every changed tiddler as a JSON file\n\n\\*/\n(function(){\n\n/*jslint node: true, browser: true */\n/*global $tw: false */\n\&quot;use strict\&quot;;\n\n// Export name and synchronous status\nexports.name = \&quot;savetrail\&quot;;\nexports.platforms = [\&quot;browser\&quot;];\nexports.after = [\&quot;startup\&quot;];\nexports.synchronous = true;\n\n// Favicon tiddler\nvar ENABLE_TIDDLER_TITLE = \&quot;$:/config/SaveTrailPlugin/enable\&quot;,\n\tENABLE_DRAFTS_TIDDLER_TITLE = \&quot;$:/config/SaveTrailPlugin/enable-drafts\&quot;,\n\tSYNC_DRAFTS_FILTER_TIDDLER_TITLE = \&quot;$:/config/SaveTrailPlugin/sync-drafts-filter\&quot;;\n\nexports.startup = function() {\n\t$tw.savetrail = $tw.savetrail || {};\n\t// Create a syncer to handle autosaving\n\t$tw.savetrail.syncadaptor = new SaveTrailSyncAdaptor();\n\t$tw.savetrail.syncer = new $tw.Syncer({\n\t\twiki: $tw.wiki,\n\t\tsyncadaptor: $tw.savetrail.syncadaptor,\n\t\ttitleSyncFilter: SYNC_DRAFTS_FILTER_TIDDLER_TITLE,\n\t\tlogging: false,\n\t\tdisableUI: true\n\t});\n\t// Add hooks for trapping user actions\n\t$tw.hooks.addHook(\&quot;th-saving-tiddler\&quot;,function(tiddler) {\n\t\tif($tw.wiki.checkTiddlerText(ENABLE_TIDDLER_TITLE,\&quot;yes\&quot;)) {\n\t\t\tvar oldTiddler = $tw.wiki.getTiddler(tiddler.fields.title);\n\t\t\tif(oldTiddler) {\n\t\t\t\tsaveTiddlerFile(oldTiddler,{reason: \&quot;overwritten\&quot;});\t\t\t\n\t\t\t}\n\t\t\tsaveTiddlerFile(tiddler,{reason: \&quot;saved\&quot;});\n\t\t}\n\t\treturn tiddler;\n\t});\n\t$tw.hooks.addHook(\&quot;th-renaming-tiddler\&quot;,function(newTiddler,oldTiddler) {\n\t\tif($tw.wiki.checkTiddlerText(ENABLE_TIDDLER_TITLE,\&quot;yes\&quot;)) {\n\t\t\tif(oldTiddler) {\n\t\t\t\tsaveTiddlerFile(oldTiddler,{reason: \&quot;deleted\&quot;});\t\t\t\n\t\t\t}\n\t\t\tsaveTiddlerFile(newTiddler,{reason: \&quot;renamed\&quot;});\n\t\t}\n\t\treturn newTiddler;\n\t});\n\t$tw.hooks.addHook(\&quot;th-relinking-tiddler\&quot;,function(newTiddler,oldTiddler) {\n\t\tif($tw.wiki.checkTiddlerText(ENABLE_TIDDLER_TITLE,\&quot;yes\&quot;)) {\n\t\t\tif(oldTiddler) {\n\t\t\t\tsaveTiddlerFile(oldTiddler,{reason: \&quot;overwritten\&quot;});\t\t\t\n\t\t\t}\n\t\t\tsaveTiddlerFile(newTiddler,{reason: \&quot;relinked\&quot;});\n\t\t}\n\t\treturn newTiddler;\n\t});\n\t$tw.hooks.addHook(\&quot;th-importing-tiddler\&quot;,function(tiddler) {\n\t\tif($tw.wiki.checkTiddlerText(ENABLE_TIDDLER_TITLE,\&quot;yes\&quot;)) {\n\t\t\tvar oldTiddler = $tw.wiki.getTiddler(tiddler.fields.title);\n\t\t\tif(oldTiddler) {\n\t\t\t\tsaveTiddlerFile(oldTiddler,{reason: \&quot;overwritten\&quot;});\t\t\t\n\t\t\t}\n\t\t\tsaveTiddlerFile(tiddler,{reason: \&quot;imported\&quot;});\n\t\t}\n\t\treturn tiddler;\n\t});\n\t$tw.hooks.addHook(\&quot;th-deleting-tiddler\&quot;,function(tiddler) {\n\t\tif($tw.wiki.checkTiddlerText(ENABLE_TIDDLER_TITLE,\&quot;yes\&quot;)) {\n\t\t\tsaveTiddlerFile(tiddler,{reason: \&quot;deleted\&quot;});\n\t\t}\n\t\treturn tiddler;\n\t});\n};\n\nfunction SaveTrailSyncAdaptor(options) {\n\tthis.logger = new $tw.utils.Logger(\&quot;SaveTrail\&quot;);\n}\n\nSaveTrailSyncAdaptor.prototype.name = \&quot;savetrail\&quot;;\n\nSaveTrailSyncAdaptor.prototype.isReady = function() {\n\t// The savetrail adaptor is always ready\n\treturn true;\n};\n\nSaveTrailSyncAdaptor.prototype.getTiddlerInfo = function(tiddler) {\n\treturn {};\n};\n\n/*\nSave a tiddler and invoke the callback with (err,adaptorInfo,revision)\n*/\nSaveTrailSyncAdaptor.prototype.saveTiddler = function(tiddler,callback) {\n\tif($tw.wiki.checkTiddlerText(ENABLE_TIDDLER_TITLE,\&quot;yes\&quot;)) {\n\t\tvar isDraft = $tw.utils.hop(tiddler.fields,\&quot;draft.of\&quot;);\n\t\tif(!isDraft || $tw.wiki.checkTiddlerText(ENABLE_DRAFTS_TIDDLER_TITLE,\&quot;yes\&quot;)) {\n\t\t\tsaveTiddlerFile(tiddler,{reason: \&quot;modified\&quot;});\n\t\t}\n\t}\n\tcallback(null);\n};\n\n/*\nLoad a tiddler and invoke the callback with (err,tiddlerFields)\n*/\nSaveTrailSyncAdaptor.prototype.loadTiddler = function(title,callback) {\n\tcallback(null,null);\n};\n\n/*\nDelete a tiddler and invoke the callback with (err)\n*/\nSaveTrailSyncAdaptor.prototype.deleteTiddler = function(title,callback,options) {\n\tcallback(null);\n};\n\nfunction saveTiddlerFile(tiddler,options) {\n\toptions = options || {};\n\tvar reason = options.reason || \&quot;changed\&quot;,\n\t\tillegalFilenameCharacters = /&lt;|&gt;|\\:|\\\&quot;|\\/|\\\\|\\||\\?|\\*|\\^|\\s/g,\n\t\tfixedTitle = $tw.utils.transliterate(tiddler.fields.title).replace(illegalFilenameCharacters,\&quot;_\&quot;),\n\t\tformattedDate = $tw.utils.stringifyDate(new Date()),\n\t\tfilename =  fixedTitle + \&quot;.\&quot; + formattedDate + \&quot;.\&quot; + reason + \&quot;.json\&quot;,\n\t\tfields = new Object();\n\tfor(var field in tiddler.fields) {\n\t\tfields[field] = tiddler.getFieldString(field);\n\t}\n\tvar text = JSON.stringify([fields],null,$tw.config.preferences.jsonSpaces),\n\t\tlink = document.createElement(\&quot;a\&quot;);\n\tlink.setAttribute(\&quot;target\&quot;,\&quot;_blank\&quot;);\n\tlink.setAttribute(\&quot;rel\&quot;,\&quot;noopener noreferrer\&quot;);\n\tif(Blob !== undefined) {\n\t\tvar blob = new Blob([text], {type: \&quot;text/plain\&quot;});\n\t\tlink.setAttribute(\&quot;href\&quot;, URL.createObjectURL(blob));\n\t} else {\n\t\tlink.setAttribute(\&quot;href\&quot;,\&quot;data:text/plain,\&quot; + encodeURIComponent(text));\n\t}\n\tlink.setAttribute(\&quot;download\&quot;,filename);\n\tdocument.body.appendChild(link);\n\tlink.click();\n\tdocument.body.removeChild(link);\n}\n\n})();\n&quot;,
+            &quot;type&quot;: &quot;application/javascript&quot;,
+            &quot;module-type&quot;: &quot;startup&quot;
+        },
+        &quot;$:/plugins/tiddlywiki/savetrail/settings&quot;: {
+            &quot;title&quot;: &quot;$:/plugins/tiddlywiki/savetrail/settings&quot;,
+            &quot;text&quot;: &quot;\n&lt;$checkbox tiddler=\&quot;$:/config/SaveTrailPlugin/enable\&quot; field=\&quot;text\&quot; checked=\&quot;yes\&quot; unchecked=\&quot;no\&quot;&gt; Enable automatic saving of modified tiddlers&lt;/$checkbox&gt;\n\n&lt;$checkbox tiddler=\&quot;$:/config/SaveTrailPlugin/enable-drafts\&quot; field=\&quot;text\&quot; checked=\&quot;yes\&quot; unchecked=\&quot;no\&quot;&gt; Include automatic saving of draft tiddlers (warning: generates a lot of download files)&lt;/$checkbox&gt;\n&quot;
+        }
+    }
+}</pre>
 </div>
 <div created="20170327145642715" creator="1uxb0x" modified="20180903010028900" modifier="1uxb0x" title="$:/SiteSubtitle">
 <pre></pre>
@@ -40873,6 +40909,107 @@ last Sunday, I did not much work and made my dad mad. I got sad cause I felt lik
 
 Safety glass was an accident, and so was maple syrup!</pre>
 </div>
+<div created="20181216194423738" modified="20181216194458036" tags="" title="2018.12.16: Draft: About, The Opening of the Rabbithole">
+<pre>!! About:
+
+This is about me
+
+I'm going to have a letter for myself here, a letter to myself written in the second person
+
+&lt;&lt;&lt;
+//You only live once, but if you do it right, once is enough.//
+
+//Mae West//
+&lt;&lt;&lt;
+
+&lt;&lt;&lt;
+//Do not mind anything that anyone tells you about anyone else. Judge everyone and everything for yourself.//
+
+//Henry James//
+&lt;&lt;&lt;
+
+---
+!! Principles:
+
+* Write about myself
+* Write who I am, what I am.
+* Write about my beliefs
+
+
+---
+!! Focus:
+
+&lt;&lt;&lt;
+//I'm glad we solved the nations capitalism, it opened it up for capitalism//
+
+//Edited, House, House//
+&lt;&lt;&lt;
+
+But of how many rabbit holes? And how deep are they? And what rabbits dug them?
+
+We can get to that later, for now we are going to talk about myself, a young socialist extrovert UN-hobied person who is UN-educated in some places and educated in others, that is a short description of me.
+
+I am a autistic homo-sapien computer like my dad, it probably Is cause of my genes (Not vaccination, because that toooooodaly makes people autistic (But I am vaccinated) (Being autistic is not a bad thing (That's exactly what a autistic person would say! (I said I am autistic.)))) I like people, like my dad, the only difference is he is to smart (Good test for seeing if someone is smart if they do not know the test: If they say they are smart when you ask them if they are, they aren't smart most likely, if they say that they aren't they are likely smart. (Oh and you need to ask them if they are smart.)) for most people, while I on the other hand, like to talk to people of all ages. My dad is as an autistic like me so we both have our own specialty's and also our UN-specialtys, and we think that socialism is good because it means everyone who works at a place owns it... I am a human who likes to [[Hyperread|Hyperreading Log]] about what I do in my computer, including [[hyperreading|Hyperreading Log]] in stuff like YouTube. I like to read articles about, well, lots of things... politics, the economy, and more. I believe in free healthcare (That is good) and in free info (That is good), I also believe that everyone together should make decisions for politics, meaning that a court shouldn't exist, nor would a president, everyone would be using a computer to do a vote on it, everything would be simple, war? I would deal with it by the all of the population going to the war (but a few men and women who would leave on boats with baby's. (Why do I need to say this?)), That's the nation I want, one that would go on forever. 
+
+What is the point in life? All we do is destroy, to survive is not good, to find it is not good, both are better but still not good. So, what is it? That is the biggest of all questions.
+
+I am a very energetic person (No not sugar rush energetic, just really energetic) I sometimes play basketball when there are others around who are playing it, I am a very bad writer and read, but what I am challenged at is talking, I also have a slur so that's bad for talking to other people, but I am still an extrovert so I like being with people, like playing with them and stuff, but not for my dad, I don't like being with him cause... I don't like him, (Hate to spill the already kinda spilled beans onto floor number two) I don't like him because he's bossy and smart and tells us to do tons of UN-fun things, and when I fail I feel stupid resulting in a sad mood, and a sad mood means I'm worse at work, its hard to get out of a sad mood so I'm not happy, the main point is my life is hard being smart and having so much to do, because of it I feel sad, making my situation even worse, because of this I feel sad bla bla bla. I know I am an extrovert because when someone else is getting hurt (or for say yelled at(I have a bad life XD)) I get hurt, because of this a am really sad because my sis get hurt a lot (NOT PHYSICALLY(Child abuse maybe, he wants to teach us and he would abuse us to teach us.))
+
+I as a child you might think I am stupid, but I am not a stupid (Unless I am! DUN DUN DUNNUN) kid (Tho I am bad at grammar) I am home-schooled (Which is amazingly insane to some people) at the age of 4 I could not speak and then i said my first word, which I don't even remember and nor does my dad
+
+I like to make little nitpicks, in-fact I made my own font (I won't show it its Private!) that's very cool (Won't be using it, I definitely trust you if I gave it to you(If I havn't that doesn't mean I don't trust you)) but its kinda based off of english, and it is very hard to write and read (can take up to 5 mins for a word) meaning that it is very good for what I call &quot;Hand-encryption&quot; so that the two people can talk while a middle man (if there is a middle man) can't understand what your saying so you can talk to one another, its so complex that I get it wrong normally, and I created it by myself! the words can be annoying and look like other words and spacing looks weird with it. the good things about it is that you don't need and points (Other that the question mark) and there is no cap's.
+
+I am a boy who wanders off and stares at random objects (No, not just women's tittys (No reason to be ashamed of them (But I don't stare at them (Or do you? (Dun-Dun-Dunnun!)))))
+
+this is the top of my wiki
+
+* I think capitalism is: (For business's)
+*# Workers work for owner of the place
+*# He works for another boss
+*# That boss works for a boss, and this happens over and over.
+*# When we reach the final boss. he is doing nothing yet getting rich. 
+** They pay people minimum wage so that they can have some money while the richest one gains shit tons.
+* I think socialism is: (For business's)
+*# Workers work for the owners of the place
+*# The owners of the place are the workers
+** Because the owners of the place are the workers, they will have to cooperate to gain money, they own the place together, because of this they will have the same pays, due to this people gain more than livable wage and are happier, Dou to the shared money there will still be businesses large and small, but there will be different company's and business's
+*# The people who work there can cooperate to live happily
+
+* Arguments against socialism:
+** Venezuela
+*** How to beat it: America
+**** Why America?: The place is stopping Venezuela's resource suppliers so that it go's into havoc, no its not political its America
+***** And America is killing people by taking there money, for every time they sell something or make something they should gain money (That's something I believe)
+** What says that people will cooperate?
+*** How to beat it: they will get kidded out and will have to learn too cooperate to survive
+** No one would be that evil
+*** Yes they are because of greed.
+** That can't be right, god would not like this place if it was bad, god would destroy it
+*** How to beat it: &quot;God don't exist&quot; or &quot;God won't do nothing about it until he judges us&quot;
+**** But he would if it was wrong!&quot;
+*****How to beat it: &quot;god ain't effecting the world anymore.&quot; or &quot;He is destroying it, just slowly&quot;
+
+
+Stop lying yourself and take it in, the world is wrong and dead. (Well, almost.)
+
+A man will destroy the world for money.
+
+&lt;&lt;&lt;
+    An About section provides an intro, SO context, and purpose to the rest of the directory. About:, as a notion, is fundamentally &quot;for the sake of which&quot; in its about-ness. I attempt to capture the exactitude of the telic metanarrative here.
+
+    I hope to demonstrate what it is, what it is for, why, and inspirations in this section. Sometimes it is an abstract or thesis, sometimes it is primarily meta about Focus:, and sometimes it fulfills other roles (I can't fully answer the question yet). It tends to be narratival rather than quantitative. It is the first of the 5 pillars of my semantic-grids/tree structures.
+
+    You'll note the top-level directory, {About}, is my introduction to myself as a person to myself (what this wiki is for and about). It is the most important page on this wiki to me. It is my existential anchor and quintessential narrative of who I take myself to be. You will have empathized with me deeply if you can effectively respond to it. 
+&lt;&lt;&lt;
+
+---
+!! Vault:
+
+---
+!! Dreams:
+
+* To make the world a better place for humanity and me.</pre>
+</div>
 <div created="20170420221441530" modified="20170420225239377" title="20th April 2017">
 <pre>I was sad, why? because I did not do writing yesterday day.I really wanted to make up games thats all. but I wanted to prove to my sister that I care about her server, yes. she is hosting a Mincraft server, and I am going to be one of the creators. CREATORS. and if i do nothing. NOTHING. and I am a creator? I need to prove myself good. and I get stoped? thats why I did not work today, for an hour! an hour! i did not because of this, now i am sad because someone made me sad in the first place, all because i had to clean, read ,and read, that sounds boring to me, so i wish that someone was nice to me and let me do writing. because I had plans for that day called Wednesday i did forget to say that it was Wednesday when it happened.
 
@@ -41347,24 +41484,13 @@ Why do you write in this?
 
 It should be cause I want to have an happy future. But really because H0p3 tells me to.</pre>
 </div>
-<div created="20180802202106278" creator="1uxb0x" modified="20180817225655201" modifier="1uxb0x" title="About, The Opening of the Rabbithole">
+<div created="20180802202106278" creator="1uxb0x" modified="20181216203826462" modifier="1uxb0x" tags="" title="About, The Opening of the Rabbithole">
 <pre>!! About:
 
 This is about me
 
 I'm going to have a letter for myself here, a letter to myself written in the second person
 
-&lt;&lt;&lt;
-//You only live once, but if you do it right, once is enough.//
-
-//Mae West//
-&lt;&lt;&lt;
-
-&lt;&lt;&lt;
-//Do not mind anything that anyone tells you about anyone else. Judge everyone and everything for yourself.//
-
-//Henry James//
-&lt;&lt;&lt;
 
 ---
 !! Principles:
@@ -41385,52 +41511,9 @@ I'm going to have a letter for myself here, a letter to myself written in the se
 
 But of how many rabbit holes? And how deep are they? And what rabbits dug them?
 
-We can get to that later, for now we are going to talk about myself, a young socialist extrovert UN-hobied person who is UN-educated in some places and educated in others, that is a short description of me.
+Who are you? A man, a woman? I do not care about your gender. ''Who are you?'' Are you a woman barely paying rent with kids? Are you a man living in a nice house having left a woman behind? Do you have to chose to get medicine, pay the rent, or get food? Are you a rich person? Or a poor one, cause I have bad news and good news, the rich person, the good news is you have alot of space to do what you want, bad news? Its from the government and you (probably) taking money from the poor, and not paying people enough. Good and bad news for the poor, good news! You (a poor person) are not guilty for being poor! Its the government! And you and your friends together can make an army, and overthrow them! The bad news is, its the government that taught you, or not, 1. strong military, 2. no one would teach there people how to overthrow them, 3, the people we need to overthrow live, everywhere! 
 
-I am a autistic homo-sapien computer like my dad, it probably Is cause of my genes (Not vaccination, because that toooooodaly makes people autistic (But I am vaccinated) (Being autistic is not a bad thing (That's exactly what a autistic person would say! (I said I am autistic.)))) I like people, like my dad, the only difference is he is to smart (Good test for seeing if someone is smart if they do not know the test: If they say they are smart when you ask them if they are, they aren't smart most likely, if they say that they aren't they are likely smart. (Oh and you need to ask them if they are smart.)) for most people, while I on the other hand, like to talk to people of all ages. My dad is as an autistic like me so we both have our own specialty's and also our UN-specialtys, and we think that socialism is good because it means everyone who works at a place owns it... I am a human who likes to [[Hyperread|Hyperreading Log]] about what I do in my computer, including [[hyperreading|Hyperreading Log]] in stuff like YouTube. I like to read articles about, well, lots of things... politics, the economy, and more. I believe in free healthcare (That is good) and in free info (That is good), I also believe that everyone together should make decisions for politics, meaning that a court shouldn't exist, nor would a president, everyone would be using a computer to do a vote on it, everything would be simple, war? I would deal with it by the all of the population going to the war (but a few men and women who would leave on boats with baby's. (Why do I need to say this?)), That's the nation I want, one that would go on forever. 
-
-What is the point in life? All we do is destroy, to survive is not good, to find it is not good, both are better but still not good. So, what is it? That is the biggest of all questions.
-
-I am a very energetic person (No not sugar rush energetic, just really energetic) I sometimes play basketball when there are others around who are playing it, I am a very bad writer and read, but what I am challenged at is talking, I also have a slur so that's bad for talking to other people, but I am still an extrovert so I like being with people, like playing with them and stuff, but not for my dad, I don't like being with him cause... I don't like him, (Hate to spill the already kinda spilled beans onto floor number two) I don't like him because he's bossy and smart and tells us to do tons of UN-fun things, and when I fail I feel stupid resulting in a sad mood, and a sad mood means I'm worse at work, its hard to get out of a sad mood so I'm not happy, the main point is my life is hard being smart and having so much to do, because of it I feel sad, making my situation even worse, because of this I feel sad bla bla bla. I know I am an extrovert because when someone else is getting hurt (or for say yelled at(I have a bad life XD)) I get hurt, because of this a am really sad because my sis get hurt a lot (NOT PHYSICALLY(Child abuse maybe, he wants to teach us and he would abuse us to teach us.))
-
-I as a child you might think I am stupid, but I am not a stupid (Unless I am! DUN DUN DUNNUN) kid (Tho I am bad at grammar) I am home-schooled (Which is amazingly insane to some people) at the age of 4 I could not speak and then i said my first word, which I don't even remember and nor does my dad
-
-I like to make little nitpicks, in-fact I made my own font (I won't show it its Private!) that's very cool (Won't be using it, I definitely trust you if I gave it to you(If I havn't that doesn't mean I don't trust you)) but its kinda based off of english, and it is very hard to write and read (can take up to 5 mins for a word) meaning that it is very good for what I call &quot;Hand-encryption&quot; so that the two people can talk while a middle man (if there is a middle man) can't understand what your saying so you can talk to one another, its so complex that I get it wrong normally, and I created it by myself! the words can be annoying and look like other words and spacing looks weird with it. the good things about it is that you don't need and points (Other that the question mark) and there is no cap's.
-
-I am a boy who wanders off and stares at random objects (No, not just women's tittys (No reason to be ashamed of them (But I don't stare at them (Or do you? (Dun-Dun-Dunnun!)))))
-
-this is the top of my wiki
-
-* I think capitalism is: (For business's)
-*# Workers work for owner of the place
-*# He works for another boss
-*# That boss works for a boss, and this happens over and over.
-*# When we reach the final boss. he is doing nothing yet getting rich. 
-** They pay people minimum wage so that they can have some money while the richest one gains shit tons.
-* I think socialism is: (For business's)
-*# Workers work for the owners of the place
-*# The owners of the place are the workers
-** Because the owners of the place are the workers, they will have to cooperate to gain money, they own the place together, because of this they will have the same pays, due to this people gain more than livable wage and are happier, Dou to the shared money there will still be businesses large and small, but there will be different company's and business's
-*# The people who work there can cooperate to live happily
-
-* Arguments against socialism:
-** Venezuela
-*** How to beat it: America
-**** Why America?: The place is stopping Venezuela's resource suppliers so that it go's into havoc, no its not political its America
-***** And America is killing people by taking there money, for every time they sell something or make something they should gain money (That's something I believe)
-** What says that people will cooperate?
-*** How to beat it: they will get kidded out and will have to learn too cooperate to survive
-** No one would be that evil
-*** Yes they are because of greed.
-** That can't be right, god would not like this place if it was bad, god would destroy it
-*** How to beat it: &quot;God don't exist&quot; or &quot;God won't do nothing about it until he judges us&quot;
-**** But he would if it was wrong!&quot;
-*****How to beat it: &quot;god ain't effecting the world anymore.&quot; or &quot;He is destroying it, just slowly&quot;
-
-
-Stop lying yourself and take it in, the world is wrong and dead. (Well, almost.)
-
-A man will destroy the world for money.
+''__''Who are you?''__ The free person? Or the poor one. Because it is your fault if you do not join in in helping the revolution,'' It will come, ''__you__'' must help it
 
 &lt;&lt;&lt;
     An About section provides an intro, SO context, and purpose to the rest of the directory. About:, as a notion, is fundamentally &quot;for the sake of which&quot; in its about-ness. I attempt to capture the exactitude of the telic metanarrative here.
@@ -41443,8 +41526,7 @@ A man will destroy the world for money.
 ---
 !! Vault:
 
-* (*crickets*)
-
+* [[2018.12.16: Draft: About, The Opening of the Rabbithole]]
 
 ---
 !! Dreams:
@@ -50186,17 +50268,18 @@ Linux is not idiot-friendly, but it's profoundly poweruser-friendly. I'm part of
 * [[Magic Log]]
 </pre>
 </div>
-<div created="20181207170108924" creator="1uxb0x" modified="20181207170200483" modifier="1uxb0x" title="Magic">
+<div created="20181207170108924" creator="1uxb0x" modified="20181216193153222" modifier="1uxb0x" tags="" title="Magic">
 <pre>!! About:
 
-
-
+This game.
 
 ---
 !! Principles:
 
-
-
+* Play fairly, learn the rules of this game
+** Play against my dad in mirror matches
+** Play against my sister in mirror matches
+** Make good decks (not right now)
 
 ---
 !! Focus:
@@ -50747,7 +50830,7 @@ This is about doing like, stuff with computers
 
 * To dream of more dreams for this page.</pre>
 </div>
-<div created="20180803174627976" creator="1uxb0x" modified="20180817181926383" modifier="1uxb0x" title="Principles of Programming Myself">
+<div created="20180803174627976" creator="1uxb0x" modified="20181216201332047" modifier="1uxb0x" tags="" title="Principles of Programming Myself">
 <pre>!! About:
 
 
@@ -50757,18 +50840,6 @@ This is about doing like, stuff with computers
     The top-level directory, {Principles}, provides the rules and ideas for how the wiki will be constructed and evolve; it is the second most important page on this wiki. You will learn much about the nature of this wiki by reasoning about it.
 
     I'm currently working to completely revamp {Principles} as I have done for {About} by replacing it wholesale with (and building it as a constitutive component into) Axioms of h0p3. 
-&lt;&lt;&lt;
-
-&lt;&lt;&lt;
-//Ever tried. Ever failed. No matter. Try Again. Fail again. Fail better.//
-
-//Samuel Beckett//
-&lt;&lt;&lt;
-
-&lt;&lt;&lt;
-//Don't kill people over stupid shit.//
-
-//Jimmy, Demon//
 &lt;&lt;&lt;
 
 &lt;&lt;&lt;
@@ -51012,7 +51083,7 @@ spam = pyperclip.paste()
 ```
 </pre>
 </div>
-<div created="20180808152351035" creator="1uxb0x" modified="20180809184950160" modifier="1uxb0x" title="Quotes">
+<div created="20180808152351035" creator="1uxb0x" modified="20181216201309181" modifier="1uxb0x" tags="" title="Quotes">
 <pre>!! About:
 
 Storing [[Quotes]]
@@ -51025,6 +51096,29 @@ Put good [[Quotes]]
 ---
 !! Focus:
 
+&lt;&lt;&lt;
+//Ever tried. Ever failed. No matter. Try Again. Fail again. Fail better.//
+
+//Samuel Beckett//
+&lt;&lt;&lt;
+
+&lt;&lt;&lt;
+//Don't kill people over stupid shit.//
+
+//Jimmy, Demon//
+&lt;&lt;&lt;
+
+&lt;&lt;&lt;
+//You only live once, but if you do it right, once is enough.//
+
+//Mae West//
+&lt;&lt;&lt;
+
+&lt;&lt;&lt;
+//Do not mind anything that anyone tells you about anyone else. Judge everyone and everything for yourself.//
+
+//Henry James//
+&lt;&lt;&lt;
 
 &lt;&lt;&lt;
 //Education is the most powerful weapon which you can use to change the world.//
