@@ -4185,6 +4185,8 @@ Error message and password prompt
 
 <li>2019.01.17 – Practical Computer Projects:</li>
 
+<li>2019.01.18 – Practical Computer Projects:</li>
+
 <li>20th April 2017</li>
 
 <li>22nd May 2017</li>
@@ -42846,6 +42848,62 @@ sleep = (sleep) - 1
 </div>
 <div created="20190117170058129" modified="20190117200955934" tags="[[Practical Computer Projects]]" title="2019.01.17 – Practical Computer Projects:">
 <pre>got the camera working.</pre>
+</div>
+<div created="20190118224858484" modified="20190118224906922" tags="[[Practical Computer Projects]]" title="2019.01.18 – Practical Computer Projects:">
+<pre>```
+
+food = (2)
+import random
+gold = (21)
+sleep = (7)
+foodeat = (10)
+eqwep = (1)
+eqarm = (1)
+for x in (&quot;1825&quot;):
+    functone = input(&quot;You stand In front of a field, what do you do? (1,Go out of it. 2 Go into it) &quot;)
+    if functone == 1:
+        functtwo = input(&quot;You enter into a marketplace, what do you do, (1, buy some wepons, 2, buy some food, 3, buy some armor, 4, sell some food, 5, go home and rest well) &quot;)
+        if functtwo == 5:
+            sleep = sleep + 5
+             
+    if functone == 2:
+        functtwo = input(&quot;You enter the field, what do you do, (1, go hunting, 2, go farming 3, ask for some food from the farmers, 4, go ask for some food from the hunters) &quot;)
+        if functtwo == 1:
+            print (&quot;you go hunting&quot;)
+            varfour = random.randint(1, 10)
+            if varfour == 1:
+                varfive = input(&quot;You see a bear! do you attack it? (1, attack, 2, leave) &quot;)
+                if varfive == input(1):
+                    if eqarm &lt;= 2:
+                        print (&quot;a scratch from the bear kills you before you can kill it.&quot;)
+                        quit()
+                    else:
+                        if eqwep &lt;= 2:
+                            print (&quot;the bear scratches at you, but fails to tear your skin, you attack it, but its thick skin takes the blow, it scratches at you again this time tearing you to shreds.&quot;)
+                            exit()
+                        else:
+                            print(&quot;the bear scratches at you, but fails to tear your skin,You attack it, its thick skin is cut, you land a blow on its heart.&quot;)
+                            food = food + (4)
+    foodeat = (foodeat) - 2
+    if food &gt;= 1:
+        food = (food) - 1
+        foodeat = (foodeat) + 2
+    if foodeat  &gt; 10:
+        foodeat = 10
+    gold = (gold) - 3
+    sleep = (sleep) - 1
+    if sleep &gt; 7:
+        sleep = 7
+    if foodeat == 0:
+        print(&quot;You starved to death!&quot;)
+        exit()
+    if sleep == 0:
+        print(&quot;You went crazy!&quot;)
+        exit()    
+    if gold == 0:
+        print(&quot;You went bankrupt!&quot;)
+        exit()
+```</pre>
 </div>
 <div created="20170420221441530" modified="20170420225239377" title="20th April 2017">
 <pre>I was sad, why? because I did not do writing yesterday day.I really wanted to make up games thats all. but I wanted to prove to my sister that I care about her server, yes. she is hosting a Mincraft server, and I am going to be one of the creators. CREATORS. and if i do nothing. NOTHING. and I am a creator? I need to prove myself good. and I get stoped? thats why I did not work today, for an hour! an hour! i did not because of this, now i am sad because someone made me sad in the first place, all because i had to clean, read ,and read, that sounds boring to me, so i wish that someone was nice to me and let me do writing. because I had plans for that day called Wednesday i did forget to say that it was Wednesday when it happened.
