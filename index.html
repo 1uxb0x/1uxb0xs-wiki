@@ -4187,6 +4187,14 @@ Error message and password prompt
 
 <li>2019.01.18 – Practical Computer Projects:</li>
 
+<li>2019.01.28 – Free Writing:</li>
+
+<li>2019.01.28 – History:</li>
+
+<li>2019.01.28 – Math:</li>
+
+<li>2019.01.28 – Practical Computer Projects: Mud: Beggars update part two:</li>
+
 <li>20th April 2017</li>
 
 <li>22nd May 2017</li>
@@ -4262,6 +4270,8 @@ Error message and password prompt
 <li>Art</li>
 
 <li>ASCII settings</li>
+
+<li>asdf</li>
 
 <li>Assignment One: Close Reading &quot;How to (Close) Read!&quot;</li>
 
@@ -4524,6 +4534,8 @@ Error message and password prompt
 <li>Free Reading</li>
 
 <li>Free Writing</li>
+
+<li>fsasfafs</li>
 
 <li>Geography</li>
 
@@ -42905,6 +42917,215 @@ for x in (&quot;1825&quot;):
         exit()
 ```</pre>
 </div>
+<div created="20190129000150036" modified="20190129012053941" tags="[[Free Writing]]" title="2019.01.28 – Free Writing:">
+<pre>The topic for today will be: Why people like to play instead of working:
+
+due to having fun and being in the moment, People want to have fun. So they play games. So when they play, they use time not working, which is being In the future. Unlike what many people would think, many people would be in the moment, lemme tell you about what one person who does not do that, my dad, He works on his wiki or works at teaching or glorified daycare</pre>
+</div>
+<div created="20190128222800102" modified="20190128230903238" tags="History" title="2019.01.28 – History:">
+<pre>Quakers believed all people were equal. Quakers also came from England in the 1640s.</pre>
+</div>
+<div created="20190128162813815" modified="20190128170101399" tags="Math" title="2019.01.28 – Math:">
+<pre>there are 128 fluid ounces in a gallon, 16 cups in a gallon, 8 pints, and 4 quarts, but you know that.</pre>
+</div>
+<div created="20190128170110217" modified="20190128183731670" tags="[[Practical Computer Projects]]" title="2019.01.28 – Practical Computer Projects: Mud: Beggars update part two:">
+<pre> I did some stuff to make an argument. it says True if a is true or, if a and b is True.
+
+```python
+&gt;&gt;&gt; a == True
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+NameError: name 'a' is not defined
+&gt;&gt;&gt; a = 1
+&gt;&gt;&gt; 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; a
+1
+&gt;&gt;&gt; a == True
+True
+&gt;&gt;&gt; a == False
+False
+&gt;&gt;&gt; a
+1
+&gt;&gt;&gt; a and a or b = True
+  File &quot;&lt;stdin&gt;&quot;, line 1
+SyntaxError: can't assign to operator
+&gt;&gt;&gt; b = 2
+&gt;&gt;&gt; b
+2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; a and a or b = True
+  File &quot;&lt;stdin&gt;&quot;, line 1
+SyntaxError: can't assign to operator
+&gt;&gt;&gt; a and b = true
+  File &quot;&lt;stdin&gt;&quot;, line 1
+SyntaxError: can't assign to operator
+&gt;&gt;&gt; a and a or b == True
+1
+&gt;&gt;&gt; a = True
+&gt;&gt;&gt; b = False
+&gt;&gt;&gt; a and a or b == True
+True
+&gt;&gt;&gt; a and a or b == False
+True
+&gt;&gt;&gt; 
+
+```
+
+I am going to make a truth table:
+
+|a|b|a and b|
+|F|F|F|
+|T|F|F|
+|F|T|F|
+|T|T|T|
+
+Now with whether it says true:
+
+|a|b|a and b|True?:|
+|F|F|F|F|
+|T|F|F|T|
+|F|T|F|F|
+|T|T|T|T|
+
+```python
+Pg = (0)
+Pgt = (-1)
+Pgtd = (-1)
+food = (2)
+import random
+gold = (60)
+sleep = (7)
+foodeat = (10)
+eqwep = (1)
+eqarm = (1)
+Shotammo = (0)
+
+for x in (&quot;1825&quot;):
+    print(&quot;food&quot;)
+    print(food)
+    print(&quot;gold&quot;)
+    print(gold)
+    if eqwep == (2):
+        if Shotammo &gt;= 1:
+            eqwep = (4)
+    functone = input(&quot;You stand In front of a field, what do you do? (1,Go out of it. 2 Go into it) &quot;)
+    if functone == 1:
+        functtwo = input(&quot;You enter into a marketplace, what do you do, (1, buy some wepons, 2, buy some food, 3, buy some armor, 4, sell some food, 5, go home and rest well) &quot;)
+        if functtwo == 4:
+            print (&quot;food &quot; food)
+            print (&quot;gold &quot; gold)
+            foodsell = input (&quot;How much do you sell? (1 food = 5 gold, 2 = 10 gold, so on so forth, you can sell as much as you want&quot;)
+            Goldgain = foodbuy ** 5
+            if food &gt; foodsell:
+                food = food - foodsell
+                gold = gold + Goldgain
+                print(&quot;you buy &quot; foodbuy &quot;!&quot;)
+            else:
+                print(&quot;Not enough food&quot;)
+        if functtwo == 2:
+            print (&quot;gold&quot;)
+            print (gold)
+            foodbuy = input (&quot;How much do you buy? (1 food = 5 gold, 2 = 10 gold, so on so forth, you can buy as much as you want)&quot;)
+            Foodsellprice = foodbuy ** 5
+            if gold &gt; Foodsellprice:
+                food = food + foodbuy
+                gold = gold - Foodsellprice
+                print(&quot;you buy &quot; foodbuy &quot;!&quot;)
+            else:
+                print(&quot;Not enough gold.&quot;)
+        if functtwo == 5:
+            sleep = sleep + 5
+    if functone == 2:
+        functtwo = input(&quot;You enter the field, what do you do, (1, go hunting, 2, go farming 3, ask for some food from the farmers, 4, go ask for some food from the hunters) &quot;)
+        if functtwo == 2:
+            Pgtd = 3
+        if functtwo == 3:
+            food = food + 2
+            print(&quot;The farmer nicely gives you some of his food&quot;)
+        if functtwo == 4:
+            varhunterfood = random.randit(6)
+            if varhunterfood &lt;= 4:
+                print(&quot;The hunter gives you nothing&quot;)
+            if varhunterfood == 5:
+                food = food + 3
+                print(&quot;The hunter nicely gives you some food&quot;)
+            if varhunterfood == 6:
+                print(&quot;The hunter boasts about his catch, then gives you some food&quot;)
+                food = food + 5
+        if functtwo == 1:
+            print (&quot;you go hunting&quot;)
+            varfour = random.randint(1, 10)
+            if varfour &gt;= 7:
+                varfive = input(&quot;You see a wolf! do you attack it? (1, attack, 2, leave) &quot;)
+                if varfive == (1):
+                    if eqwep &lt;= 3:
+                        print(&quot;before you can strike it, it howls and attacks you with two other wolves and kills you.&quot;)
+                        exit()
+                    else:
+                        print(&quot;it howls and you shoot it dead.&quot;)
+                        Shotammo = (Shotammo) - 1
+                        if eqwep == 4:
+                            if Shotammo == 0:
+                                eqarm = 2
+                        if eqwep &lt;= 3:
+                            print(&quot;You see two more wolves aproch, you get ready to swing at them, but they jump at you and tear you to shreds&quot;)
+                            exit()
+                        else:
+                            Shotammo = (Shotammo) - 1
+                            if eqwep == 4:
+                                if Shotammo == 0:
+                                    eqarm = 2
+                            if eqwep &lt;= 3:
+                                print(&quot;you shoot a wolf while the other jumps at you and bites you to death&quot;)
+                                exit()
+                            else:
+                                print(&quot;you shoot the two of the wolves dead before they can get you.&quot;)
+                                food = (food) + 9
+                                Shotammo = (Shotammo) - 1
+            if varfour == 1:
+                varfive = input(&quot;You see a bear! do you attack it? (1, attack, 2, leave) &quot;)
+                if varfive == input(1):
+                    if eqarm &lt;= 2:
+                        print (&quot;a scratch from the bear kills you before you can kill it.&quot;)
+                        quit()
+                    else:
+                        if eqwep &lt;= 2:
+                            print (&quot;the bear scratches at you, but fails to tear your skin, you attack it, but its thick skin takes the blow, it scratches at you again this time tearing you to shreds.&quot;)
+                            exit()
+                        else:
+                            print(&quot;the bear scratches at you, but fails to tear your skin,You attack it, its thick skin is cut, you land a blow on its heart.&quot;)
+                            food = food + (6)
+                            if eqwep == 4:
+                                Shotammo = Shotammo - 1
+                if varfive == input(2):
+                    print(&quot;you run away.&quot;)
+    foodeat = (foodeat) - 2
+    if food &gt;= 1:
+        food = (food) - 1
+        foodeat = (foodeat) + 4
+    if foodeat  &gt; 10:
+        foodeat = 10
+    gold = (gold) - 3
+    sleep = (sleep) - 1
+    if sleep &gt; 7:
+        sleep = 7
+    if foodeat == 0:
+        print(&quot;You starved to death!&quot;)
+        exit()
+    if sleep == 0:
+        print(&quot;You went crazy!&quot;)
+        exit()    
+    if gold &lt;= 0:
+        print(&quot;You went bankrupt!&quot;)
+        exit()
+    if eqwep == 4:
+        if Shotammo == 0:
+            eqarm = 2
+
+
+```</pre>
+</div>
 <div created="20170420221441530" modified="20170420225239377" title="20th April 2017">
 <pre>I was sad, why? because I did not do writing yesterday day.I really wanted to make up games thats all. but I wanted to prove to my sister that I care about her server, yes. she is hosting a Mincraft server, and I am going to be one of the creators. CREATORS. and if i do nothing. NOTHING. and I am a creator? I need to prove myself good. and I get stoped? thats why I did not work today, for an hour! an hour! i did not because of this, now i am sad because someone made me sad in the first place, all because i had to clean, read ,and read, that sounds boring to me, so i wish that someone was nice to me and let me do writing. because I had plans for that day called Wednesday i did forget to say that it was Wednesday when it happened.
 
@@ -43435,6 +43656,9 @@ Who are you? A man, a woman? I do not care about your gender. ''Who are you?'' A
 </div>
 <div created="20170411145339580" modified="20170411145352411" tags="" title="ASCII settings">
 <pre>&lt;div style=&quot;text-align:center;display:inline&quot;&gt; &lt;div style=&quot;font-family:monospace;white-space:pre;&quot;&gt; &lt;$view&gt; &lt;/div&gt;&lt;/div&gt;</pre>
+</div>
+<div created="20190128215951222" modified="20190128215954873" tags="" title="asdf">
+<pre></pre>
 </div>
 <div created="20180115210015473" modified="20180116015632562" title="Assignment One: Close Reading &quot;How to (Close) Read!&quot;">
 <pre>* Step one:
@@ -46320,6 +46544,9 @@ Learning about how to take care of fish so that I can learn about how to take ca
 !! Dreams:
 
 * To dream of more dreams for this page.</pre>
+</div>
+<div created="20190128220111586" modified="20190128220124632" tags="" title="fsasfafs">
+<pre></pre>
 </div>
 <div created="20180903235710604" creator="1uxb0x" modified="20181207170123915" modifier="1uxb0x" title="Geography">
 <pre>!! About:
